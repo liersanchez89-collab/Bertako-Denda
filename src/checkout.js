@@ -1,4 +1,4 @@
-// Cloudflare Pages Function → responde en https://tu-web/api/checkout
+// Lógica del pago. La llama src/worker.js cuando alguien pide POST /api/checkout
 // Recibe el carrito, comprueba precios en productos.json (nunca nos fiamos del navegador)
 // y crea una sesión de pago en Stripe. Devuelve la URL de la página de pago.
 //

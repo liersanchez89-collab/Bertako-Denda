@@ -1,0 +1,12 @@
+// Configuración de Cloudflare para la tienda Bertako
+{
+  "name": "bertako-denda",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+  // No borrar las variables que se pongan desde el panel de Cloudflare
+  "keep_vars": true
+}
