@@ -7,7 +7,7 @@
     "descripcion": "Arándanos de temporada cocinados a fuego lento, con poco azúcar. Para tostadas, yogur o queso.",
     "productor": "Productor por confirmar",
     "origen": "Euskadi",
-    "imagen": "img/productos/mermelada.svg",
+    "imagen": "mermelada.svg",
     "envio": true,
     "disponible": true
   },
@@ -19,7 +19,7 @@
     "descripcion": "Zumo prensado de arándanos, sin colorantes. Sabor intenso y algo ácido. Mejor frío.",
     "productor": "Productor por confirmar",
     "origen": "Euskadi",
-    "imagen": "img/productos/zumo.svg",
+    "imagen": "zumo.svg",
     "envio": true,
     "disponible": true
   },
@@ -31,7 +31,7 @@
     "descripcion": "Queso de oveja de un pastor de la zona. Curación y tipo por confirmar.",
     "productor": "Productor por confirmar",
     "origen": "Euskadi",
-    "imagen": "img/productos/queso.svg",
+    "imagen": "queso.svg",
     "envio": false,
     "nota": "De momento solo recogida en mano",
     "disponible": true
