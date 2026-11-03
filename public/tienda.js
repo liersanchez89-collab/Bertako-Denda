@@ -2,8 +2,8 @@
 // 1) Carga productos.json  2) Pinta las tarjetas  3) Gestiona el carrito
 // 4) Al pagar, pide a /api/checkout (función de Cloudflare) un enlace de pago de Stripe.
 
-const ENVIO_GRATIS_DESDE = 40;   // € — cambia aquí el umbral de envío gratis
-const COSTE_ENVIO = 4.95;        // € — tarifa plana península (orientativa en la web; la real la pone el servidor)
+// Envíos: los packs con "envioIncluido": true se envían a casa gratis (península).
+// Si el carrito lleva al menos uno, todo el pedido viaja con él. Si no, solo recogida en mano.
 
 const euros = (n) => n.toLocaleString("es-ES", { style: "currency", currency: "EUR" });
 const $ = (sel) => document.querySelector(sel);
@@ -24,27 +24,35 @@ async function cargarProductos() {
   return res.json();
 }
 
+function tarjeta(p) {
+  const art = document.createElement("article");
+  art.className = "producto" + (p.destacado ? " destacado" : "");
+  const chip = p.envioIncluido
+    ? `<span class="chip ok">Envío incluido</span>`
+    : `<span class="chip">Solo recogida en mano</span>`;
+  art.innerHTML = `
+    ${p.destacado ? `<span class="cinta">${p.destacado}</span>` : ""}
+    <img src="${p.imagen}" alt="${p.nombre}: ${p.formato}" loading="lazy" width="400" height="400">
+    <div class="cuerpo">
+      <span class="formato">${p.formato}</span>
+      <h3>${p.nombre}</h3>
+      <p class="desc">${p.descripcion}</p>
+      <span class="origen">${p.productor} · ${p.origen}</span>
+      ${chip}
+      <div class="pie">
+        <span class="precio">${euros(p.precio)}</span>
+        <button class="boton-anadir" type="button" data-id="${p.id}">Añadir</button>
+      </div>
+    </div>`;
+  return art;
+}
+
 function pintarProductos() {
-  const rejilla = $("#rejilla");
-  rejilla.innerHTML = "";
-  productos.filter((p) => p.disponible !== false).forEach((p) => {
-    const art = document.createElement("article");
-    art.className = "producto";
-    art.innerHTML = `
-      <img src="${p.imagen}" alt="${p.nombre}" loading="lazy" width="400" height="400">
-      <div class="cuerpo">
-        <span class="formato">${p.formato}</span>
-        <h3>${p.nombre}</h3>
-        <p class="desc">${p.descripcion}</p>
-        <span class="origen">${p.productor} · ${p.origen}</span>
-        ${p.envio === false ? `<span class="chip">${p.nota || "Solo recogida en mano"}</span>` : ""}
-        <div class="pie">
-          <span class="precio">${euros(p.precio)}</span>
-          <button class="boton-anadir" type="button" data-id="${p.id}">Añadir</button>
-        </div>
-      </div>`;
-    rejilla.appendChild(art);
-  });
+  const visibles = productos.filter((p) => p.disponible !== false);
+  const packs = $("#rejilla-packs"), sueltos = $("#rejilla");
+  packs.innerHTML = ""; sueltos.innerHTML = "";
+  visibles.filter((p) => p.tipo === "pack").forEach((p) => packs.appendChild(tarjeta(p)));
+  visibles.filter((p) => p.tipo !== "pack").forEach((p) => sueltos.appendChild(tarjeta(p)));
 }
 
 function anadir(id) {
@@ -71,7 +79,7 @@ function pintarCarrito() {
   const lineas = lineasCarrito();
   const unidades = lineas.reduce((s, l) => s + l.cantidad, 0);
   const subtotal = lineas.reduce((s, l) => s + l.cantidad * l.producto.precio, 0);
-  const soloRecogida = lineas.some((l) => l.producto.envio === false);
+  const conEnvio = lineas.some((l) => l.producto.envioIncluido);
 
   $("#contador").textContent = unidades;
   $("#contador").hidden = unidades === 0;
@@ -97,11 +105,9 @@ function pintarCarrito() {
   }
 
   $("#subtotal").textContent = euros(subtotal);
-  let notaEnvio;
-  if (!lineas.length) notaEnvio = "";
-  else if (soloRecogida) notaEnvio = "Tu pedido lleva un producto que solo entregamos en mano. Al pagar podrás elegir el punto de recogida.";
-  else if (subtotal >= ENVIO_GRATIS_DESDE) notaEnvio = "Tienes envío gratis. También puedes elegir recogida en mano al pagar.";
-  else notaEnvio = `Envío ${euros(COSTE_ENVIO)} o recogida gratis. Te faltan ${euros(ENVIO_GRATIS_DESDE - subtotal)} para el envío gratis.`;
+  let notaEnvio = "";
+  if (lineas.length && conEnvio) notaEnvio = "Envío a casa incluido (península). Al pagar también puedes elegir recogida en mano.";
+  else if (lineas.length) notaEnvio = "Este pedido es para recogida en mano. Si quieres que te lo enviemos a casa, añade uno de los packs con envío incluido.";
   $("#nota-envio").textContent = notaEnvio;
   $("#pagar").disabled = !lineas.length;
   $("#mensaje").hidden = true;
@@ -156,5 +162,5 @@ cargarProductos().then((lista) => {
   pintarProductos();
   pintarCarrito();
 }).catch(() => {
-  $("#rejilla").innerHTML = `<p class="vacio">No se han podido cargar los productos. Recarga la página.</p>`;
+  $("#rejilla-packs").innerHTML = `<p class="vacio">No se han podido cargar los productos. Recarga la página.</p>`;
 });

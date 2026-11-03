@@ -236,3 +236,15 @@ a { color: var(--bosque); }
 .carrito-flotante.salto { animation: salto .4s ease; }
 @keyframes salto { 40% { transform: scale(1.18); } }
 @media (prefers-reduced-motion: reduce) { .carrito-flotante.salto { animation: none; } }
+
+/* Packs */
+.sueltos { padding-top: 0; }
+.producto { position: relative; }
+.producto.destacado { border-color: var(--bosque); box-shadow: 0 0 0 1px var(--bosque); }
+.cinta {
+  position: absolute; top: 14px; left: 14px; z-index: 1;
+  background: var(--bosque); color: var(--crema);
+  font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600;
+  padding: 5px 10px; border-radius: 999px;
+}
+.chip.ok { background: #E3EDDF; color: var(--bosque); border-color: #C6DAC0; }

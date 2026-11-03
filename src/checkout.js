@@ -4,8 +4,8 @@
 //
 // Necesita UNA variable secreta en Cloudflare: STRIPE_SECRET_KEY (sk_test_... para pruebas, sk_live_... para vender)
 
-const ENVIO_GRATIS_DESDE = 40;  // €
-const COSTE_ENVIO = 4.95;       // €
+// Envíos: si el carrito lleva algún producto con "envioIncluido": true (los packs),
+// se ofrece envío a domicilio gratis. Si no, solo recogida en mano.
 
 export async function onRequestPost({ request, env }) {
   try {
@@ -19,15 +19,13 @@ export async function onRequestPost({ request, env }) {
     const catalogo = await (await env.ASSETS.fetch(new URL("/productos.json", origen))).json();
 
     const params = new URLSearchParams();
-    let subtotal = 0;
-    let soloRecogida = false;
+    let conEnvio = false;
 
     items.forEach((item, i) => {
       const p = catalogo.find((x) => x.id === item.id && x.disponible !== false);
       const cantidad = Math.max(1, Math.min(20, parseInt(item.cantidad, 10) || 1));
       if (!p) throw new Error(`Producto no disponible: ${item.id}`);
-      if (p.envio === false) soloRecogida = true;
-      subtotal += p.precio * cantidad;
+      if (p.envioIncluido) conEnvio = true;
 
       params.append(`line_items[${i}][quantity]`, cantidad);
       params.append(`line_items[${i}][price_data][currency]`, "eur");
@@ -38,9 +36,8 @@ export async function onRequestPost({ request, env }) {
     // Opciones de entrega
     const opciones = [];
     opciones.push({ nombre: "Recogida en mano (mercadillo u Oñati)", precio: 0, min: 1, max: 7 });
-    if (!soloRecogida) {
-      const precio = subtotal >= ENVIO_GRATIS_DESDE ? 0 : COSTE_ENVIO;
-      opciones.unshift({ nombre: precio ? "Envío a domicilio (península)" : "Envío a domicilio gratis", precio, min: 2, max: 4 });
+    if (conEnvio) {
+      opciones.unshift({ nombre: "Envío a domicilio incluido (península)", precio: 0, min: 2, max: 4 });
     }
     opciones.forEach((o, i) => {
       const k = `shipping_options[${i}][shipping_rate_data]`;

@@ -1,6 +1,60 @@
 [
   {
+    "id": "pack-gosaria",
+    "tipo": "pack",
+    "nombre": "Pack Gosaria",
+    "formato": "1 mermelada + 2 zumos",
+    "precio": 17.90,
+    "descripcion": "Gosaria es desayuno en euskera. Lo justo para empezar el día con los arándanos de Igor.",
+    "productor": "Igor",
+    "origen": "Oleta",
+    "imagen": "pack-gosaria.jpg",
+    "envioIncluido": true,
+    "disponible": true
+  },
+  {
+    "id": "pack-oleta",
+    "tipo": "pack",
+    "nombre": "Pack Oleta",
+    "formato": "2 mermeladas + 2 zumos",
+    "precio": 22.90,
+    "descripcion": "El pack completo, con el nombre del pueblo de Igor. Perfecto para regalar.",
+    "destacado": "Recomendado",
+    "productor": "Igor",
+    "origen": "Oleta",
+    "imagen": "pack-oleta.jpg",
+    "envioIncluido": true,
+    "disponible": true
+  },
+  {
+    "id": "pack-familia",
+    "tipo": "pack",
+    "nombre": "Pack Familia",
+    "formato": "3 mermeladas + 3 zumos",
+    "precio": 31.90,
+    "descripcion": "Para casas con mucha gente o para repartir. El que mejor precio sale por unidad.",
+    "productor": "Igor",
+    "origen": "Oleta",
+    "imagen": "pack-familia.jpg",
+    "envioIncluido": true,
+    "disponible": true
+  },
+  {
+    "id": "pack-mercadillo",
+    "tipo": "pack",
+    "nombre": "Pack Mercadillo",
+    "formato": "1 mermelada + 1 zumo",
+    "precio": 8.00,
+    "descripcion": "Para probar. Lo recoges en nuestro puesto del mercadillo o en Oñati.",
+    "productor": "Igor",
+    "origen": "Oleta",
+    "imagen": "pack-mercadillo.jpg",
+    "envioIncluido": false,
+    "disponible": true
+  },
+  {
     "id": "mermelada-arandanos",
+    "tipo": "suelto",
     "nombre": "Mermelada de arándanos",
     "formato": "Tarro",
     "precio": 4.90,
@@ -8,11 +62,12 @@
     "productor": "Igor",
     "origen": "Oleta",
     "imagen": "mermelada.jpg",
-    "envio": true,
+    "envioIncluido": false,
     "disponible": true
   },
   {
     "id": "zumo-arandanos",
+    "tipo": "suelto",
     "nombre": "Zumo de arándanos",
     "formato": "Botella",
     "precio": 3.75,
@@ -20,11 +75,12 @@
     "productor": "Igor",
     "origen": "Oleta",
     "imagen": "zumo.jpg",
-    "envio": true,
+    "envioIncluido": false,
     "disponible": true
   },
   {
     "id": "queso",
+    "tipo": "suelto",
     "nombre": "Queso",
     "formato": "Pieza",
     "precio": 12.00,
@@ -32,7 +88,7 @@
     "productor": "Productor por confirmar",
     "origen": "Euskadi",
     "imagen": "queso.svg",
-    "envio": true,
+    "envioIncluido": false,
     "disponible": false
   }
 ]
