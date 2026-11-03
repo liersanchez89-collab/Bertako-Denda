@@ -1,0 +1,39 @@
+[
+  {
+    "id": "mermelada-arandanos",
+    "nombre": "Mermelada de arándanos",
+    "formato": "Tarro de 250 g",
+    "precio": 5.50,
+    "descripcion": "Arándanos de temporada cocinados a fuego lento, con poco azúcar. Para tostadas, yogur o queso.",
+    "productor": "Productor por confirmar",
+    "origen": "Euskadi",
+    "imagen": "img/productos/mermelada.svg",
+    "envio": true,
+    "disponible": true
+  },
+  {
+    "id": "zumo-arandanos",
+    "nombre": "Zumo de arándanos",
+    "formato": "Botella de 750 ml",
+    "precio": 4.00,
+    "descripcion": "Zumo prensado de arándanos, sin colorantes. Sabor intenso y algo ácido. Mejor frío.",
+    "productor": "Productor por confirmar",
+    "origen": "Euskadi",
+    "imagen": "img/productos/zumo.svg",
+    "envio": true,
+    "disponible": true
+  },
+  {
+    "id": "queso",
+    "nombre": "Queso",
+    "formato": "Pieza de 500 g aprox.",
+    "precio": 12.00,
+    "descripcion": "Queso de oveja de un pastor de la zona. Curación y tipo por confirmar.",
+    "productor": "Productor por confirmar",
+    "origen": "Euskadi",
+    "imagen": "img/productos/queso.svg",
+    "envio": false,
+    "nota": "De momento solo recogida en mano",
+    "disponible": true
+  }
+]
