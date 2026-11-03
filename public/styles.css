@@ -22,6 +22,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } * { transition: none !important; } }
 
@@ -161,7 +162,7 @@ a { color: var(--bosque); }
 @media (max-width: 760px) { .envios .tres { grid-template-columns: 1fr; } }
 
 /* Pie */
-.pie-pagina { padding-block: 36px; color: var(--gris); font-size: .86rem; }
+.pie-pagina { padding-block: 36px 100px; color: var(--gris); font-size: .86rem; }
 .pie-pagina .envoltura { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; }
 .pie-pagina nav { display: flex; flex-wrap: wrap; gap: 16px; }
 .pie-pagina a { color: var(--gris); }
@@ -212,3 +213,26 @@ a { color: var(--bosque); }
 }
 .productor p { margin: 0; color: var(--gris); max-width: 60ch; }
 @media (max-width: 600px) { .productor .ficha { grid-template-columns: 1fr; gap: 16px; } .productor .inicial { width: 72px; height: 72px; font-size: 2.2rem; } }
+
+/* Carrito flotante (abajo a la derecha) */
+.carrito-flotante {
+  position: fixed; z-index: 30;
+  right: calc(20px + env(safe-area-inset-right, 0px));
+  bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  width: 60px; height: 60px; border-radius: 50%; border: 0;
+  background: var(--bosque); color: var(--crema);
+  display: grid; place-items: center; cursor: pointer;
+  box-shadow: 0 10px 24px -8px rgba(20, 40, 28, .55);
+  transition: transform .15s ease;
+}
+.carrito-flotante:hover { transform: scale(1.06); }
+.carrito-flotante .contador {
+  position: absolute; top: -4px; right: -4px;
+  min-width: 24px; height: 24px; padding: 0 6px; border-radius: 999px;
+  background: var(--kraft); color: var(--tinta); border: 2px solid var(--papel);
+  display: grid; place-items: center; font-size: .78rem; font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.carrito-flotante.salto { animation: salto .4s ease; }
+@keyframes salto { 40% { transform: scale(1.18); } }
+@media (prefers-reduced-motion: reduce) { .carrito-flotante.salto { animation: none; } }

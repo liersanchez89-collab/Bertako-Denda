@@ -51,6 +51,8 @@ function anadir(id) {
   carrito[id] = (carrito[id] || 0) + 1;
   guardarCarrito();
   pintarCarrito();
+  const b = $("#abrir-carrito");
+  b.classList.remove("salto"); void b.offsetWidth; b.classList.add("salto");
 }
 function cambiar(id, delta) {
   carrito[id] = (carrito[id] || 0) + delta;
@@ -72,6 +74,7 @@ function pintarCarrito() {
   const soloRecogida = lineas.some((l) => l.producto.envio === false);
 
   $("#contador").textContent = unidades;
+  $("#contador").hidden = unidades === 0;
   const cont = $("#lineas");
 
   if (!lineas.length) {
