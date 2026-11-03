@@ -161,6 +161,40 @@ cargarProductos().then((lista) => {
   productos = lista;
   pintarProductos();
   pintarCarrito();
+  prepararRevelado();
 }).catch(() => {
   $("#rejilla-packs").innerHTML = `<p class="vacio">No se han podido cargar los productos. Recarga la página.</p>`;
 });
+
+// ---------- Movimiento ----------
+const sinMovimiento = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Palabras que rotan en el titular
+(function rotarPalabras() {
+  const cont = document.querySelector(".rota");
+  if (!cont || sinMovimiento) return;
+  const palabras = [...cont.children];
+  let i = 0;
+  setInterval(() => {
+    const actual = palabras[i];
+    i = (i + 1) % palabras.length;
+    actual.classList.remove("activa"); actual.classList.add("sale");
+    setTimeout(() => actual.classList.remove("sale"), 600);
+    palabras[i].classList.add("activa");
+    cont.setAttribute("aria-label", palabras[i].textContent);
+  }, 2800);
+})();
+
+// Aparición al hacer scroll: solo para lo que está por debajo de la pantalla al cargar
+function prepararRevelado() {
+  if (sinMovimiento || !("IntersectionObserver" in window)) return;
+  const obs = new IntersectionObserver((entradas) => {
+    entradas.forEach((e) => { if (e.isIntersecting) { const el = e.target; el.classList.add("visto"); obs.unobserve(el); setTimeout(() => { el.style.transitionDelay = ""; }, 1000); } });
+  }, { rootMargin: "0px 0px -8% 0px" });
+  document.querySelectorAll(".seccion h2, .seccion .intro, .producto, .ficha, .envios .tres > div").forEach((el, n) => {
+    if (el.getBoundingClientRect().top < window.innerHeight) return; // ya visible: no se toca
+    el.classList.add("revela");
+    el.style.transitionDelay = (el.classList.contains("producto") ? (n % 3) * 90 : 0) + "ms";
+    obs.observe(el);
+  });
+}

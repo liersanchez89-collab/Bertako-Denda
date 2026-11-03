@@ -260,3 +260,43 @@ a { color: var(--bosque); }
   padding: 5px 10px; border-radius: 999px;
 }
 .chip.ok { background: #E3EDDF; color: var(--bosque); border-color: #C6DAC0; }
+
+/* ---------- Movimiento (discreto) ---------- */
+/* Palabras que rotan en el titular: todas ocupan la misma celda, solo una se ve */
+.rota { display: inline-grid; color: var(--bosque); font-style: italic; }
+.rota > span {
+  grid-area: 1 / 1; white-space: nowrap;
+  opacity: 0; transform: translateY(.35em);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.rota > span.activa { opacity: 1; transform: none; }
+.rota > span.sale { opacity: 0; transform: translateY(-.35em); }
+
+/* La caja se "envuelve" al cargar */
+@keyframes banda { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+@keyframes aparece { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.caja::before { transform-origin: top; animation: banda .9s cubic-bezier(.2,.7,.2,1) .15s both; }
+.caja .sello > * { animation: aparece .7s ease both; }
+.caja .sello img { animation-delay: .8s; }
+.caja .sello strong { animation-delay: .95s; }
+.caja .sello small { animation-delay: 1.1s; }
+.caja { transition: transform .5s ease, box-shadow .5s ease; }
+.caja:hover { transform: translateY(-4px) rotate(-.6deg); box-shadow: 0 26px 50px -22px rgba(60, 40, 10, .5); }
+
+/* Aparición al hacer scroll (solo para lo que aún no se ha visto) */
+.revela { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+.revela.visto { opacity: 1; transform: none; }
+
+/* Zoom suave en las fotos */
+.producto img { transition: transform .6s ease; }
+.producto:hover img { transform: scale(1.04); }
+.producto { transition: box-shadow .3s ease, transform .3s ease; }
+.producto:hover { transform: translateY(-3px); box-shadow: 0 14px 30px -18px rgba(31, 58, 44, .45); }
+
+@media (prefers-reduced-motion: reduce) {
+  .rota > span { transition: none; }
+  .caja::before, .caja .sello > * { animation: none; }
+  .caja:hover, .producto:hover { transform: none; }
+  .producto:hover img { transform: none; }
+  .revela { opacity: 1; transform: none; transition: none; }
+}
